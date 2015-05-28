@@ -103,6 +103,29 @@ class ExtractSinglePackageFileCommand(sublime_plugin.WindowCommand):
     def is_visible(self, files):
         return self.is_enabled(files)
 
+class ExtractAllPackagesCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        # Find all loaded packages
+        #   e.g. /usr/lib/sublime-text-3/Packages/HTML.sublime-package
+        #   e.g. /home/todd/.config/sublime-text-3/Installed Packages/Case Conversion.sublime-package
+        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L568-L584
+        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L683-L690
+        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L587-L590
+        multi_importer = sublime_plugin.multi_importer
+        zippaths = []
+        for loader in multi_importer.loaders:
+            zippath = loader.zippath
+            if is_a_package(zippath):
+                zippaths.append(zippath)
+
+        zippaths_total = len(zippaths)
+        if sublime.ok_cancel_dialog("Extract %s to the Packages directory? This may take a while."
+                                    % zippaths_total):
+            for zippath in zippaths:
+                extract_package(zippath)
+            _msg("Completed extracting %s packages" % zippaths_total)
+
+
 class ExtractPackageFilesCommand(sublime_plugin.WindowCommand):
     def run(self, files):
         for filename in files:

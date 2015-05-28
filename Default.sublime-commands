@@ -2,5 +2,9 @@
     {
         "caption": "Extract Sublime Package: Extract open Package File",
         "command": "extract_current_package_file"
+    },
+    {
+        "caption": "Extract Sublime Package: Extract all packages",
+        "command": "extract_all_packages"
     }
 ]
