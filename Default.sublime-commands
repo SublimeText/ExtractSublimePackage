@@ -5,6 +5,9 @@
     },
     {
         "caption": "Extract Sublime Package: Extract all packages",
-        "command": "extract_all_packages"
+        "command": "extract_all_packages",
+        // if path is an existing directory packages will get
+        // extracted there instead.
+        "args": {"path": "/home/bud/tmp/hello" }
     }
 ]

@@ -50,10 +50,15 @@ def packages_dir_mode(funclocals):
 def _msg(msg):
     sublime.status_message("%s: %s" % (PLUGIN_NAME, msg))
 
-def extract_package(filename):
+
+def extract_package(filename, spcpath=""):
     base_name = os.path.basename(filename)
     dir_base_name = os.path.splitext(base_name)[0]
-    outdir = os.path.join(sublime.packages_path(), dir_base_name)
+    print(sublime.packages_path())
+    if spcpath != "":
+        outdir = os.path.join(spcpath, dir_base_name)
+    else:
+        outdir = os.path.join(sublime.packages_path(), dir_base_name)
     try:
         arc = zipfile.ZipFile(filename)
     except zipfile.BadZipfile:
@@ -80,11 +85,13 @@ def extract_package(filename):
         _msg("%s extracted" % base_name)
     
 
+
+
 class ExtractCurrentPackageFileCommand(sublime_plugin.WindowCommand):
-    def run(self):
+    def run(self, path=""):
         view = self.window.active_view()
         if view is not None:
-            extract_package(view.file_name())
+            extract_package(view.file_name(), path)
 
     def is_enabled(self):
         view = self.window.active_view()
@@ -93,9 +100,10 @@ class ExtractCurrentPackageFileCommand(sublime_plugin.WindowCommand):
     def is_visible(self):
         return self.is_enabled()
 
+
 class ExtractSinglePackageFileCommand(sublime_plugin.WindowCommand):
-    def run(self, files):
-        extract_package(files[0])
+    def run(self, files, path=""):
+        extract_package(files[0], path)
 
     def is_enabled(self, files):
         return len(files) == 1 and is_a_package(files[0])
@@ -104,13 +112,8 @@ class ExtractSinglePackageFileCommand(sublime_plugin.WindowCommand):
         return self.is_enabled(files)
 
 class ExtractAllPackagesCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        # Find all loaded packages
-        #   e.g. /usr/lib/sublime-text-3/Packages/HTML.sublime-package
-        #   e.g. /home/todd/.config/sublime-text-3/Installed Packages/Case Conversion.sublime-package
-        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L568-L584
-        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L683-L690
-        # https://github.com/twolfson/sublime-files/blob/3083.0.0/sublime_plugin.py#L587-L590
+    def run(self, path=""):
+
         multi_importer = sublime_plugin.multi_importer
         zippaths = []
         for loader in multi_importer.loaders:
@@ -122,7 +125,7 @@ class ExtractAllPackagesCommand(sublime_plugin.WindowCommand):
         if sublime.ok_cancel_dialog("Extract %s to the Packages directory? This may take a while."
                                     % zippaths_total):
             for zippath in zippaths:
-                extract_package(zippath)
+                extract_package(zippath, path)
             _msg("Completed extracting %s packages" % zippaths_total)
 
 
