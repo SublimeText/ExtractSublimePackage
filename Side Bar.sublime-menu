@@ -1,4 +1,4 @@
 [
     { "command": "extract_package_files", "caption": "Extract these Packages", "args": { "files": [] } },
-    { "command": "extract_single_package_file", "caption": "Extract this Package", "args": { "files": [] } }
+    { "command": "extract_single_package_file", "caption": "sssExtract this Package", "args": { "files": []} },
 ]
