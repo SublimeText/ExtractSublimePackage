@@ -1,5 +1,13 @@
 Extract Sublime Package -- extract a .sublime-package file for quick editing
 ============================================================================
+
+**This package is unmaintained!
+For a similar but better experience, install [OverrideAudit][]!**
+
+---
+
+[OverrideAudit]: https://odatnurd.net/overrideaudit/
+
 This plugin allows you to easily extract a `.sublime-package` file for quick
 editing. The package contents will be stored in subdirectory of your `Packages`
 folder named after the package file. For example,
@@ -10,7 +18,7 @@ changes you make to them. If you extract a package file that was installed by
 [Package Control][pkgctrl] and then choose to uninstall the package, it will
 remove the extracted files as well.
 
-[pkgctrl]: https://sublime.wbond.net/
+[pkgctrl]: https://packagecontrol.io/
 
 ## Configuration
 Configuration settings are stored in the user configuration file
