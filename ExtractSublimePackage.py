@@ -75,7 +75,7 @@ def extract_package(filename):
             arc.extractall(outdir)
         except:
             # so something else altogether went wrong
-            _msg("extracting %' failed" % base_name)
+            _msg("extracting '%s' failed" % base_name)
             return
         _msg("%s extracted" % base_name)
     
